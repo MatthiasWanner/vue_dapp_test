@@ -36,6 +36,9 @@
     }
   },
   "lint-staged": {
-    "*.{ts,vue}": "eslint --fix"
+    "*.{ts,vue}": [
+      "npm run prettier-format",
+      "npm run lint"
+    ]
   }
 }
