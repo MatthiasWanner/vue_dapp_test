@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { getWalletBalance } from 'wallet_balancer/getWalletBalance'
+  import { getWalletBalance } from 'wallet_balancer/src'
   import useWindowEthereum from '../../hooks/useWindowEthereum'
   import Input from './TextInput.vue'
   import Button from '../UI/Button.vue'
