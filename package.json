@@ -11,7 +11,8 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "wallet_balancer": "https://github.com/MatthiasWanner/wallet_balancer.git"
   },
   "devDependencies": {
     "@metamask/types": "^1.1.0",
