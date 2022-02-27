@@ -21,7 +21,7 @@
 <template>
   <label :class="labelClass || ''">
     {{ label }}
-    <select v-bind="register(fieldName)">
+    <select :class="selectClass" v-bind="register(fieldName)">
       <option value="">--Please choose an option--</option>
       <option v-for="item in items" :value="item.value">
         {{ item.label }}
