@@ -8,21 +8,25 @@
   import useForm from '../../hooks/useForm';
   import SelectInput from './SelectInput.vue';
   import networks from '../../constants/networks.contants';
+  import { IBalanceInfos, IFormData } from '../../types';
+  import { ContractType } from 'wallet_balancer/types';
 
-  interface IFormData {
-    contractAddress: string;
-    network: string;
-  }
-  interface BalanceInfos {
-    balance: string;
-    symbol: string;
-  }
-
-  const result = ref<BalanceInfos | null>(null);
+  const result = ref<IBalanceInfos | null>(null);
   const requestError = ref<Error | null>(null);
+  const contractType = ref<ContractType>('erc20');
 
   const { handleSubmit, register } = useForm();
-  const { ethereum, switchNetwork, metamaskState } = useWindowEthereum();
+  const { ethereum, switchNetwork } = useWindowEthereum();
+
+  const onClick = (newContractType: ContractType) => {
+    contractType.value = newContractType;
+  };
+  const erc20ButtonClasses = () => {
+    return `network-button ${contractType.value === 'erc20' ? 'active' : ''}`;
+  };
+  const erc721ButtonClasses = () => {
+    return `network-button ${contractType.value === 'erc721' ? 'active' : ''}`;
+  };
 
   const submitForm = async ({ contractAddress, network }: IFormData) => {
     try {
@@ -32,7 +36,11 @@
 
       await switchNetwork(network);
 
-      const balanceInfos = await getWalletBalance(contractAddress, ethereum);
+      const balanceInfos = await getWalletBalance({
+        contractAddress,
+        windowEthereum: ethereum,
+        contractType: contractType.value,
+      });
       result.value = balanceInfos;
     } catch (error) {
       requestError.value = {
@@ -45,6 +53,18 @@
 
 <template>
   <section class="container">
+    <aside class="contract-types-buttons-container">
+      <Button
+        children="ERC-20"
+        @click="onClick('erc20')"
+        :class="erc20ButtonClasses()"
+      />
+      <Button
+        children="ERC-721"
+        @click="onClick('erc721')"
+        :class="erc721ButtonClasses()"
+      />
+    </aside>
     <form
       class="control-form"
       @submit.prevent="handleSubmit(submitForm)"
@@ -59,19 +79,19 @@
       />
       <SelectInput
         :items="networks.map((n) => ({ label: n.name, value: n.chainId }))"
-        label="Réseau"
+        label="Network"
         :register="register"
         fieldName="network"
         label-class="network-label"
         select-class="network-select"
       />
-      <Button class="form-button" children="Controler" />
+      <Button class="form-button" children="Get Balance!" />
     </form>
     <SimpleText
       :text="`${
         result
           ? `Balance: ${result.balance} ${result.symbol}`
-          : 'Pas de requête émise'
+          : 'No request sent yet'
       }`"
     />
     <pre v-if="requestError" class="form-error">{{
@@ -89,21 +109,49 @@
 
     box-sizing: border-box;
   }
+
+  .contract-types-buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .network-button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: 1px solid #ddd;
+    color: #333;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .active {
+    background-color: #13ce66;
+    color: #fff;
+  }
+
   .control-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    width: 100%;
     height: 300px;
   }
 
+  .contract-label {
+    width: 100%;
+    max-width: 500px;
+  }
   .contract-input {
     display: flex;
     text-align: center;
-  }
-
-  .form-button {
-    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .network-label {
@@ -132,6 +180,9 @@
   @media screen and (min-width: 768px) {
     .container {
       padding: 50px;
+    }
+    .contract-label {
+      width: 50%;
     }
   }
 </style>
