@@ -1,16 +1,17 @@
 <script setup lang="ts">
-  import { ButtonHTMLAttributes } from 'vue'
+  import { ButtonHTMLAttributes } from 'vue';
 
   interface IProps {
-    type?: ButtonHTMLAttributes['type']
-    children: string
+    type?: ButtonHTMLAttributes['type'];
+    children: string;
+    onClick?: () => void;
   }
 
-  defineProps<IProps>()
+  defineProps<IProps>();
 </script>
 
 <template>
-  <button v-bind:type="type">{{ children }}</button>
+  <button :type="type" @click="onClick">{{ children }}</button>
 </template>
 
 <style></style>

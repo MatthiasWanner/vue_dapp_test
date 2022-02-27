@@ -1,18 +1,21 @@
 <script setup lang="ts">
+  import { RegisterInput } from '/@/types/useForm.types';
+
   interface IProps {
-    label: string
-    register: string
-    labelClass?: string
-    inputClass?: string
+    label: string;
+    labelClass?: string;
+    inputClass?: string;
+    register: RegisterInput;
+    fieldName: string;
   }
 
-  defineProps<IProps>()
+  defineProps<IProps>();
 </script>
 
 <template>
-  <label v-bind:class="labelClass || ''">
+  <label :class="labelClass || ''">
     {{ label }}
-    <input v-bind:class="inputClass || ''" type="text" v-bind:name="register" />
+    <input :class="inputClass || ''" type="text" v-bind="register(fieldName)" />
   </label>
 </template>
 
