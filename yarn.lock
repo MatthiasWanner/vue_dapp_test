@@ -2560,7 +2560,7 @@ vue@^3.2.25:
 
 "wallet_balancer@https://github.com/MatthiasWanner/wallet_balancer.git":
   version "0.0.1"
-  resolved "https://github.com/MatthiasWanner/wallet_balancer.git#a9fab458d065a1d7c005bf541bef480a9cd5b0fa"
+  resolved "https://github.com/MatthiasWanner/wallet_balancer.git#a7354506e579f917f157060493bc4da40d1b7077"
   dependencies:
     ethers "^5.5.4"
 
