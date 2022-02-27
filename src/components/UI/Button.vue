@@ -4,13 +4,14 @@
   interface IProps {
     type?: ButtonHTMLAttributes['type'];
     children: string;
+    onClick?: () => void;
   }
 
   defineProps<IProps>();
 </script>
 
 <template>
-  <button :type="type">{{ children }}</button>
+  <button :type="type" @click="onClick">{{ children }}</button>
 </template>
 
 <style></style>
