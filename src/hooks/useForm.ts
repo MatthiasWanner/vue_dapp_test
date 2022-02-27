@@ -54,9 +54,8 @@ const useForm = () => {
   const register: RegisterInput = (field: string) => {
     const fieldIndex = formState.fields.findIndex((f) => f === field);
 
-    if (fieldIndex !== -1) throw new Error(`Field ${field} already registered`);
+    if (fieldIndex === -1) formState.fields.push(field);
 
-    formState.fields.push(field);
     return {
       id: field,
       name: field,
