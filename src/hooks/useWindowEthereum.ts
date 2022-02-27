@@ -57,6 +57,7 @@ const useWindowEthereum = () => {
         try {
           const network = networks.find((n) => n.chainId === chainId);
           if (!network) throw new Error('Network not supported yet');
+
           const {
             address: rpcUrl,
             name: chainName,
@@ -79,8 +80,9 @@ const useWindowEthereum = () => {
             `Please manually install the ${chainId} network into MetaMask`
           );
         }
+      } else {
+        throw new Error(`Error connecting to ${chainId} network`);
       }
-      throw new Error(`Error connecting to ${chainId} network`);
     }
   };
 

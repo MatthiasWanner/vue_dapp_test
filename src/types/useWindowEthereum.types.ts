@@ -9,6 +9,7 @@ export enum Networks {
   FANTOM = 'Fantom',
   BINANCE = 'Binance',
   XDAI = 'XDai',
+  FUSE = 'Fuse',
 }
 
 export enum Status {
