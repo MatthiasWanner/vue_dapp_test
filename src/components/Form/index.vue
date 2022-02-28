@@ -106,7 +106,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-
     box-sizing: border-box;
   }
 
