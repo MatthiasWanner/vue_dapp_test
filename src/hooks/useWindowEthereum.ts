@@ -1,43 +1,87 @@
+import { ref } from 'vue';
 import networks from '../constants/networks.contants';
 import {
   INetwork,
-  IMetamaskState,
   Status,
+  ConnectInfos,
 } from '../types/useWindowEthereum.types';
 
 const useWindowEthereum = () => {
-  const metamaskState: IMetamaskState = {
-    network: null,
-    account: null,
-    status: Status.DISCONNECTED,
-    error: null,
-  };
+  const status = ref<Status>(Status.DISCONNECTED);
+  const account = ref<string | null>(null);
+  const network = ref<string | null>(null);
 
   const ethereum = (window as any).ethereum;
 
-  const getStatus = () => {
-    if (!ethereum) return Status.UNINSTALLED;
-    if (!ethereum.isConnected()) return Status.DISCONNECTED;
-    return Status.CONNECTED;
+  const getNetwork = (chainId: string) =>
+    networks.find((n) => n.chainId === chainId);
+
+  const getAccount = async () => {
+    if (!ethereum) return null;
+    const [connectedAccount] = await ethereum.request({
+      method: 'eth_accounts',
+    });
+
+    return (connectedAccount as string) || null;
+  };
+
+  const connect = async () => {
+    status.value = Status.CONNECTING;
+    try {
+      await ethereum.request({ method: 'eth_requestAccounts' });
+      status.value = Status.CONNECTED;
+    } catch (error) {
+      status.value = Status.DISCONNECTED;
+    }
+  };
+
+  const getConnectedNetworkChainId = async () => {
+    const currentChainId = await ethereum.request({
+      method: 'eth_chainId',
+    });
+
+    return (currentChainId as string) || null;
+  };
+
+  const getWalletInfos = () => {
+    getAccount()
+      .then((connectedAccount) => {
+        if (connectedAccount) {
+          status.value = Status.CONNECTED;
+          account.value = connectedAccount;
+        }
+      })
+      .then(() => {
+        getConnectedNetworkChainId().then((connectedNetworkChainId) => {
+          if (connectedNetworkChainId) {
+            network.value = getNetwork(connectedNetworkChainId)?.name || null;
+          }
+        });
+      });
   };
 
   ethereum.on('accountsChanged', (accounts: string[]) => {
-    metamaskState.account = accounts[0];
+    account.value = accounts[0];
   });
 
   ethereum.on('chainChanged', (chainId: string) => {
-    metamaskState.network =
-      networks.find((network) => network.chainId === chainId)?.name || null;
+    network.value = getNetwork(chainId)?.name || null;
   });
 
   ethereum.on('disconnect', () => {
-    metamaskState.status = Status.DISCONNECTED;
+    status.value = Status.DISCONNECTED;
+    network.value = null;
+    account.value = null;
+  });
+
+  ethereum.on('connect', ({ chainId }: ConnectInfos) => {
+    getWalletInfos();
   });
 
   const switchNetwork = async (chainId: INetwork['chainId']) => {
     try {
       if (!chainId) throw new Error('chainId is required');
-      if (getStatus() !== Status.CONNECTED)
+      if (status.value !== Status.CONNECTED)
         throw new Error('Please connect to Metamask');
 
       const currentChainId = (await ethereum.request({
@@ -55,7 +99,7 @@ const useWindowEthereum = () => {
       // if it is not, then install it into the user MetaMask
       if ((error as any).code === 4902) {
         try {
-          const network = networks.find((n) => n.chainId === chainId);
+          const network = getNetwork(chainId);
           if (!network) throw new Error('Network not supported yet');
 
           const {
@@ -86,10 +130,15 @@ const useWindowEthereum = () => {
     }
   };
 
+  getWalletInfos();
+
   return {
     ethereum,
     switchNetwork,
-    metamaskState,
+    status,
+    account,
+    network,
+    connect,
   };
 };
 
