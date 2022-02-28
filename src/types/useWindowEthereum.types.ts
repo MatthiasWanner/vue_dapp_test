@@ -32,5 +32,8 @@ export interface IMetamaskState {
   network: Networks | null;
   account: string | null;
   status: Status;
-  error: string | null;
+}
+
+export interface ConnectInfos {
+  chainId: string;
 }
