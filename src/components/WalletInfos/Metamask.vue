@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import useWallet from '../../hooks/useWindowEthereum';
   import { getTruncatedString } from '../../utils';
-  import Button from '../UI/Button.vue';
+  import ConnectButton from './ConnectButton.vue';
 
   const { account, network, status, connect } = useWallet();
 </script>
@@ -17,24 +17,50 @@
       <span>Network: </span>
       <span>{{ network }}</span>
     </p>
-    <div v-if="status === 'disconnected' || status === 'connecting'">
-      <Button
-        :children="status === 'disconnected' ? 'Connect' : 'Connecting...'"
-        :onClick="connect"
-        :disabled="status === 'connecting'"
-      ></Button>
-    </div>
+    <ConnectButton
+      v-if="status === 'disconnected' || status === 'connecting'"
+      class="base"
+      :text="status === 'disconnected' ? 'Connect' : 'Connecting'"
+      :onClick="connect"
+    ></ConnectButton>
   </aside>
 </template>
 
-<style scoped>
+<style lang="scss">
   .aside-wallet {
     text-align: start;
     margin-bottom: 20px;
+    height: 180px;
+    box-sizing: border-box;
+    background-image: linear-gradient(
+      15deg,
+      rgba(2, 0, 36, 100) 0,
+      rgba(9, 121, 33, 98) 30%,
+      rgba(110, 253, 254, 100) 94%
+    );
+    color: aqua;
+    padding: 1rem;
+    transform: translateY(-35%);
+    border-radius: 15px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .wallet-title {
+    margin-top: 0;
   }
 
   .wallet-infos-text {
     margin-top: 0;
+  }
+
+  .hidden-button {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
   }
 
   @media screen and (min-width: 768px) {
@@ -42,24 +68,27 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      align-items: center;
       text-align: center;
       padding: 10px;
-      box-sizing: border-box;
-      background: #fafafa;
-      border-radius: 0.5rem;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
       position: absolute;
-      top: 1rem;
+      top: 0.5rem;
       right: 1rem;
       width: 200px;
       height: 250px;
       margin-bottom: 0;
+      transform: translateY(0);
     }
 
     .wallet-infos-text {
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    .wallet-title {
+      color: darkslategrey;
     }
   }
 </style>
