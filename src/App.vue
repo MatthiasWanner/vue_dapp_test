@@ -6,7 +6,13 @@
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" width="100" height="100" />
+  <img
+    alt="Vue logo"
+    src="./assets/logo.png"
+    width="100"
+    height="100"
+    class="vue-logo"
+  />
   <Metamask />
   <Form />
 </template>
@@ -20,5 +26,11 @@
     color: #2c3e50;
     margin-top: 20px;
     position: relative;
+    max-width: 1400px;
+  }
+
+  .vue-logo {
+    position: relative;
+    z-index: 10;
   }
 </style>
