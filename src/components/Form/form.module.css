@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.contract-types-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.network-button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: 1px solid #ddd;
+  color: #333;
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #13ce66;
+  color: #fff;
+}
+
+.control-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 300px;
+}
+
+.contract-label {
+  width: 100%;
+  max-width: 500px;
+}
+.contract-input {
+  display: flex;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.network-label {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.network-select {
+  text-align: center;
+}
+
+.form-error {
+  color: red;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  justify-content: start;
+  text-align: start;
+  overflow: auto;
+  background-color: rgba(240, 122, 122, 0.3);
+  padding: 10px;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    padding: 50px;
+  }
+  .contract-label {
+    width: 50%;
+  }
+}
