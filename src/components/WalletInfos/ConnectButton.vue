@@ -17,14 +17,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './button.module.scss';
-  button {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-  }
+  @import './button.scss';
 </style>

@@ -6,6 +6,16 @@
   box-sizing: border-box;
 }
 
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
 .contract-types-buttons-container {
   display: flex;
   flex-direction: row;
@@ -14,7 +24,8 @@
   margin-bottom: 1rem;
 }
 
-.network-button {
+.network-button,
+.submit-button {
   padding: 10px 20px;
   margin: 0 10px;
   border: 1px solid #ddd;
@@ -25,7 +36,8 @@
   cursor: pointer;
 }
 
-.active {
+.active,
+.submit-button {
   background-color: #13ce66;
   color: #fff;
 }
@@ -37,17 +49,6 @@
   justify-content: space-around;
   width: 100%;
   height: 300px;
-}
-
-.contract-label {
-  width: 100%;
-  max-width: 500px;
-}
-.contract-input {
-  display: flex;
-  text-align: center;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .network-label {
@@ -76,8 +77,5 @@
 @media screen and (min-width: 768px) {
   .container {
     padding: 50px;
-  }
-  .contract-label {
-    width: 50%;
   }
 }
