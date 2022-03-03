@@ -18,13 +18,4 @@
 
 <style lang="scss" scoped>
   @import './button.scss';
-  button {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-  }
 </style>
