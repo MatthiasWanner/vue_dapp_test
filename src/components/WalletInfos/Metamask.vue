@@ -41,8 +41,8 @@
     color: aqua;
     padding: 1rem;
     transform: translateY(-35%);
-    border-radius: 15px;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 4px 4px 20px rgba(255, 255, 255, 0.3);
   }
 
   .wallet-title {
@@ -71,7 +71,7 @@
       align-items: center;
       text-align: center;
       padding: 10px;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+      box-shadow: 5px 5px 5px rgba(250, 249, 249, 0.2);
       position: absolute;
       top: 0.5rem;
       right: 1rem;
