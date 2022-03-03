@@ -101,5 +101,5 @@
 </template>
 
 <style>
-  @import './form.module.css';
+  @import './form.scss';
 </style>
