@@ -13,10 +13,17 @@
 </script>
 
 <template>
-  <label :class="labelClass || ''">
-    {{ label }}
-    <input :class="inputClass || ''" type="text" v-bind="register(fieldName)" />
-  </label>
+  <div class="form__group field">
+    <input
+      :class="`form__field`"
+      type="text"
+      :placeholder="label"
+      v-bind="register(fieldName)"
+    />
+    <label :for="fieldName" :class="`form__label`">{{ label }}</label>
+  </div>
 </template>
 
-<style></style>
+<style lang="scss" scoped>
+  @import './text-input.scss';
+</style>

@@ -19,8 +19,7 @@
 </script>
 
 <template>
-  <label :class="labelClass || ''">
-    {{ label }}
+  <label class="custom-select">
     <select :class="selectClass" v-bind="register(fieldName)">
       <option value="">--Please choose an option--</option>
       <option v-for="item in items" :value="item.value">
@@ -30,4 +29,6 @@
   </label>
 </template>
 
-<style></style>
+<style lang="scss" scope>
+  @import './select-input.sass';
+</style>

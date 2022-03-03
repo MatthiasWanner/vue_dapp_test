@@ -6,7 +6,7 @@
   import Button from '../UI/Button.vue';
   import SimpleText from '../UI/SimpleText.vue';
   import useForm from '../../hooks/useForm';
-  import SelectInput from './SelectInput.vue';
+  import SelectInput from './SelectInput/SelectInput.vue';
   import networks from '../../constants/networks.contants';
   import { IBalanceInfos, IFormData } from '../../types';
   import { ContractType } from 'wallet_balancer/types';
@@ -85,7 +85,11 @@
         label-class="network-label"
         select-class="network-select"
       />
-      <Button class="form-button" children="Get Balance!" />
+      <Button
+        children="Get Balance"
+        @click="handleSubmit(submitForm)"
+        class="submit-button"
+      />
     </form>
     <SimpleText
       :text="`${
@@ -101,5 +105,5 @@
 </template>
 
 <style>
-  @import './form.module.css';
+  @import './form.scss';
 </style>
