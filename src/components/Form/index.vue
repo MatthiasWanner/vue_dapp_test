@@ -92,6 +92,7 @@
       />
     </form>
     <SimpleText
+      className="balance-result"
       :text="`${
         result
           ? `Balance: ${result.balance} ${result.symbol}`
@@ -106,4 +107,8 @@
 
 <style>
   @import './form.scss';
+
+  .balance-result {
+    color: bisque;
+  }
 </style>
