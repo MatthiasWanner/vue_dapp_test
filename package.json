@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "vue": "^3.2.25",
+    "vue-router": "4",
     "wallet_balancer": "https://github.com/MatthiasWanner/wallet_balancer.git"
   },
   "devDependencies": {
