@@ -13,12 +13,16 @@
     selectClass?: string;
     fieldName: string;
     register: RegisterInput;
+    showLabel?: boolean;
   }
 
   defineProps<IProps>();
 </script>
 
 <template>
+  <span v-if="showLabel" :class="`select-label ${labelClass || ''}`">{{
+    label
+  }}</span>
   <label class="custom-select">
     <select :class="selectClass" v-bind="register(fieldName)">
       <option value="">--Please choose an option--</option>
