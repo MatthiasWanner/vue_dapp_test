@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import SelectInput from '../Form/SelectInput/SelectInput.vue';
   import useForm from '../../hooks/useForm';
-  import entryTokens from '../../constants/tokens.constants';
+  import useWindowEthereum from '../../hooks/useWindowEthereum';
+  import useParaSwap from '../../hooks/useParaSwap';
   import Button from '../UI/Button.vue';
   import Input from '../Form/TextInput.vue';
   import { ref } from 'vue';
@@ -16,7 +17,12 @@
   const result = ref<SwapResult | null>(null);
   const requestError = ref<Error | null>(null);
 
+  const { currentChainId, network } = useWindowEthereum();
+
   const { handleSubmit, register } = useForm();
+
+  // FIXME: Manage Network chain Id updated => always null on first render
+  const { tokens } = useParaSwap(currentChainId.value);
 
   const submitForm = (formData: IFormData) => {
     requestError.value = null;
@@ -37,10 +43,11 @@
 </script>
 
 <template>
+  <p class="network-infos">Current network: {{ network }}</p>
   <form id="swap-form">
     <div class="token-select-container">
       <SelectInput
-        :items="entryTokens.map((n) => ({ label: n.symbol, value: n.address }))"
+        :items="tokens.map((n) => ({ label: n.symbol, value: n.address }))"
         label="Input Token"
         :register="register"
         fieldName="input-token"
@@ -50,7 +57,7 @@
     </div>
     <div class="token-select-container">
       <SelectInput
-        :items="entryTokens.map((n) => ({ label: n.symbol, value: n.address }))"
+        :items="tokens.map((n) => ({ label: n.symbol, value: n.address }))"
         label="Output Token"
         :register="register"
         fieldName="output-token"
@@ -75,6 +82,11 @@
 </template>
 
 <style scoped lang="scss">
+  .network-infos {
+    font-size: 20px;
+    color: antiquewhite;
+  }
+
   #swap-form {
     display: flex;
     flex-direction: column;
