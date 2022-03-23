@@ -32,12 +32,20 @@
       'output-token': outputToken,
       'token-amount': tokenAmount,
     } = formData;
-    console.log('submitForm', { inputToken, outputToken, tokenAmount });
 
     if (!inputToken || !outputToken || !tokenAmount) {
       requestError.value = new Error('All fields are required');
       return;
     }
+    const inputTokenData = tokens.value.find(
+      (token) => token.symbol === inputToken
+    );
+
+    if (!inputTokenData) {
+      requestError.value = new Error('Invalid input token');
+      return;
+    }
+
     result.value = `${inputToken}-${outputToken}-${tokenAmount}`;
   };
 </script>
@@ -46,8 +54,15 @@
   <p class="network-infos">Current network: {{ network }}</p>
   <form id="swap-form">
     <div class="token-select-container">
+      <Input
+        labelClass="amount-label"
+        inputClass="amount-input"
+        label="Input Token Amount"
+        fieldName="token-amount"
+        :register="register"
+      />
       <SelectInput
-        :items="tokens.map((n) => ({ label: n.symbol, value: n.address }))"
+        :items="tokens.map((n) => ({ label: n.symbol, value: n.symbol }))"
         label="Input Token"
         :register="register"
         fieldName="input-token"
@@ -56,8 +71,16 @@
       />
     </div>
     <div class="token-select-container">
+      <Input
+        labelClass="amount-label"
+        inputClass="amount-output"
+        label="Output Token Amount"
+        fieldName="token-amount"
+        :register="register"
+        :disabled="true"
+      />
       <SelectInput
-        :items="tokens.map((n) => ({ label: n.symbol, value: n.address }))"
+        :items="tokens.map((n) => ({ label: n.symbol, value: n.symbol }))"
         label="Output Token"
         :register="register"
         fieldName="output-token"
@@ -65,13 +88,6 @@
         :show-label="true"
       />
     </div>
-    <Input
-      labelClass="amount-label"
-      inputClass="amount-input"
-      label="Amount"
-      fieldName="token-amount"
-      :register="register"
-    />
     <Button
       type="submit"
       children="Swap"
@@ -100,6 +116,21 @@
   }
 
   .token-select-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 20px;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 768px) {
+    .token-select-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      width: 75%;
+    }
   }
 </style>
