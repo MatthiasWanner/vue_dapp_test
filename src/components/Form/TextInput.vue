@@ -2,6 +2,7 @@
   import { RegisterInput } from '/@/types/useForm.types';
 
   interface IProps {
+    type?: 'number' | 'text';
     label: string;
     labelClass?: string;
     inputClass?: string;
@@ -18,7 +19,7 @@
     <input
       :disabled="disabled || false"
       :class="`form__field`"
-      type="text"
+      :type="type || 'text'"
       :placeholder="label"
       v-bind="register(fieldName)"
     />
