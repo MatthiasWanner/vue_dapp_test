@@ -17,36 +17,61 @@
   const result = ref<SwapResult | null>(null);
   const requestError = ref<Error | null>(null);
 
-  const { currentChainId, network } = useWindowEthereum();
+  const { currentChainId, network, switchNetwork } = useWindowEthereum();
 
   const { handleSubmit, register } = useForm();
 
   // FIXME: Manage Network chain Id updated => always null on first render
   const { tokens } = useParaSwap(currentChainId.value);
+  const submitForm = async (formData: IFormData) => {
+    try {
+      await switchNetwork('0x3');
+      requestError.value = null;
+      result.value = null;
+      const {
+        'input-token': srcToken,
+        'output-token': destToken,
+        'token-amount': tokenAmount,
+      } = formData;
 
-  const submitForm = (formData: IFormData) => {
-    requestError.value = null;
-    result.value = null;
-    const {
-      'input-token': inputToken,
-      'output-token': outputToken,
-      'token-amount': tokenAmount,
-    } = formData;
+      if (!srcToken || !destToken || !tokenAmount)
+        throw new Error('All fields are required');
 
-    if (!inputToken || !outputToken || !tokenAmount) {
-      requestError.value = new Error('All fields are required');
-      return;
+      const tokenAmountNumber = +tokenAmount.replaceAll(',', '.');
+
+      if (typeof tokenAmountNumber !== 'number' || isNaN(tokenAmountNumber))
+        throw new Error('Invalid token amount');
+
+      const srcTokenData = tokens.value.find(
+        (token) => token.symbol === srcToken
+      );
+
+      if (!srcTokenData) throw new Error('Invalid input token');
+
+      const amount = tokenAmountNumber * 10 ** srcTokenData.decimals;
+
+      // const network = parseInt(currentChainId.value || '', 16);
+      // FIXME: Manage Network chain Id updated => only ropsten supported for the moment
+      const network = parseInt('0x3', 16);
+
+      if (isNaN(network)) throw new Error('Invalid network');
+
+      const side = 'SELL';
+
+      const body = {
+        srcToken,
+        destToken,
+        amount,
+        network,
+        side,
+      };
+
+      console.log('Swap request body', body);
+
+      result.value = `${amount} ${srcToken}`;
+    } catch (error) {
+      requestError.value = error as Error;
     }
-    const inputTokenData = tokens.value.find(
-      (token) => token.symbol === inputToken
-    );
-
-    if (!inputTokenData) {
-      requestError.value = new Error('Invalid input token');
-      return;
-    }
-
-    result.value = `${inputToken}-${outputToken}-${tokenAmount}`;
   };
 </script>
 
