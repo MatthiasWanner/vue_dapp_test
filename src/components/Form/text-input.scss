@@ -8,7 +8,8 @@ $gray: #9b9b9b;
   position: relative;
   padding: 15px 0 0;
   margin-top: 10px;
-  width: 50%;
+  margin-bottom: 10px;
+  width: 80%;
 }
 
 .form__field {
@@ -64,5 +65,11 @@ $gray: #9b9b9b;
   &:required,
   &:invalid {
     box-shadow: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .form__group {
+    width: 50%;
   }
 }
