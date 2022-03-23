@@ -20,12 +20,11 @@
 </script>
 
 <template>
-  <span v-if="showLabel" :class="`select-label ${labelClass || ''}`">{{
+  <!-- <span v-if="showLabel" :class="`select-label ${labelClass || ''}`">{{
     label
-  }}</span>
+  }}</span> -->
   <label class="custom-select">
     <select :class="selectClass" v-bind="register(fieldName)">
-      <option value="">--Please choose an option--</option>
       <option v-for="item in items" :value="item.value">
         {{ item.label }}
       </option>

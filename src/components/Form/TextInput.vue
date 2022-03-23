@@ -7,6 +7,7 @@
     inputClass?: string;
     register: RegisterInput;
     fieldName: string;
+    disabled?: boolean;
   }
 
   defineProps<IProps>();
@@ -15,6 +16,7 @@
 <template>
   <div class="form__group field">
     <input
+      :disabled="disabled || false"
       :class="`form__field`"
       type="text"
       :placeholder="label"
