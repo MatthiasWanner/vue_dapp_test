@@ -1,11 +1,14 @@
 <script setup lang="ts">
-  import SelectInput from '../Form/SelectInput/SelectInput.vue';
+  import { ref } from 'vue';
   import useForm from '../../hooks/useForm';
   import useWindowEthereum from '../../hooks/useWindowEthereum';
-  import useParaSwap from '../../hooks/useParaSwap';
+  import useParaSwap, {
+    IGetRateParams,
+    IParaswapTransactionArgs,
+  } from '../../hooks/useParaSwap';
+  import SelectInput from '../Form/SelectInput/SelectInput.vue';
   import Button from '../UI/Button.vue';
   import Input from '../Form/TextInput.vue';
-  import { ref } from 'vue';
   interface IFormData {
     'input-token': string;
     'output-token': string;
@@ -17,12 +20,16 @@
   const result = ref<SwapResult | null>(null);
   const requestError = ref<Error | null>(null);
 
-  const { currentChainId, network, switchNetwork } = useWindowEthereum();
+  const { currentChainId, network, switchNetwork, account, sendTransaction } =
+    useWindowEthereum();
 
   const { handleSubmit, register } = useForm();
 
   // FIXME: Manage Network chain Id updated => always null on first render
-  const { tokens } = useParaSwap(currentChainId.value);
+  const { tokens, getRate, postTransaction } = useParaSwap(
+    currentChainId.value
+  );
+
   const submitForm = async (formData: IFormData) => {
     try {
       await switchNetwork('0x3');
@@ -46,29 +53,57 @@
         (token) => token.symbol === srcToken
       );
 
-      if (!srcTokenData) throw new Error('Invalid input token');
+      const destTokenDatas = tokens.value.find(
+        (token) => token.symbol === destToken
+      );
+
+      if (!srcTokenData || !destTokenDatas)
+        throw new Error('Invalid input or output token');
 
       const amount = tokenAmountNumber * 10 ** srcTokenData.decimals;
 
       // const network = parseInt(currentChainId.value || '', 16);
       // FIXME: Manage Network chain Id updated => only ropsten supported for the moment
-      const network = parseInt('0x3', 16);
+      const transactionNetwork = parseInt('0x3', 16);
 
-      if (isNaN(network)) throw new Error('Invalid network');
+      if (isNaN(transactionNetwork)) throw new Error('Invalid network');
 
-      const side = 'SELL';
+      const side: IGetRateParams['side'] = 'SELL';
 
-      const body = {
-        srcToken,
-        destToken,
+      const getRateParams: IGetRateParams = {
+        srcToken: srcTokenData.address,
+        srcDecimals: srcTokenData.decimals,
+        destToken: destTokenDatas.address,
+        destDecimals: destTokenDatas.decimals,
         amount,
-        network,
+        network: transactionNetwork,
         side,
       };
 
-      console.log('Swap request body', body);
+      const priceRoute = await getRate(getRateParams);
 
-      result.value = `${amount} ${srcToken}`;
+      result.value = `${
+        priceRoute.destAmount / 10 ** priceRoute.destDecimals
+      } ${destToken}`;
+
+      const userAddress = account.value;
+      if (!userAddress) throw new Error('No user address connected');
+
+      const transactionBoby: IParaswapTransactionArgs = {
+        srcToken: srcTokenData.address,
+        srcAmount: priceRoute.srcAmount,
+        destToken: destTokenDatas.address,
+        destAmount: priceRoute.destAmount,
+        userAddress,
+        priceRoute,
+      };
+
+      const inputData = await postTransaction(
+        transactionBoby,
+        transactionNetwork
+      );
+
+      await sendTransaction(inputData);
     } catch (error) {
       requestError.value = error as Error;
     }
@@ -82,7 +117,7 @@
       <Input
         labelClass="amount-label"
         inputClass="amount-input"
-        label="Input Token Amount"
+        label="I want to swap"
         fieldName="token-amount"
         :register="register"
       />
@@ -99,7 +134,7 @@
       <Input
         labelClass="amount-label"
         inputClass="amount-output"
-        label="Output Token Amount"
+        label="Into"
         fieldName="token-amount"
         :register="register"
         :disabled="true"
