@@ -6,15 +6,7 @@
 </script>
 
 <template>
-  <img
-    alt="Vue logo"
-    src="./assets/logo.png"
-    width="100"
-    height="100"
-    class="vue-logo"
-  />
-  <Metamask />
-  <Form />
+  <router-view />
 </template>
 
 <style>
