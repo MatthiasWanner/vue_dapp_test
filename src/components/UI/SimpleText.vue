@@ -1,13 +1,14 @@
 <script setup lang="ts">
   interface IProps {
-    text: string
+    text: string;
+    className?: string;
   }
 
-  defineProps<IProps>()
+  defineProps<IProps>();
 </script>
 
 <template>
-  <p>{{ text }}</p>
+  <p :class="className || ''">{{ text }}</p>
 </template>
 
 <style></style>

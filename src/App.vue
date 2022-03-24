@@ -20,6 +20,14 @@
 <style>
   body {
     margin: 0;
+    background-image: linear-gradient(
+      0deg,
+      #fdfdff 0,
+      #7f7f80 10%,
+      #000000 100%
+    );
+    width: 100vw;
+    min-height: 100vh;
   }
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -30,12 +38,7 @@
     padding: 10px;
     position: relative;
     max-width: 1400px;
-    background-image: linear-gradient(
-      0deg,
-      #fdfdff 0,
-      #7f7f80 10%,
-      #000000 100%
-    );
+    margin: auto;
   }
 
   .vue-logo {
