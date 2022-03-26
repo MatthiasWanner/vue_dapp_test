@@ -1,6 +1,8 @@
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 
+import paymentDetails from '../constants/payment.constants';
+
 export interface ParaSwapToken {
   symbol: string;
   address: string;
@@ -25,7 +27,10 @@ export interface IParaswapTransactionBoby {
   srcAmount: string;
   destAmount: string;
   userAddress: string;
-  partner: 'paraswap.io';
+  receiver?: string;
+  partnerAddress: string;
+  partnerFeeBps: number;
+  partner?: string;
   priceRoute: any;
 }
 export type IParaswapTransactionArgs = Omit<
@@ -73,7 +78,7 @@ const useParaSwap = (chainId: string | null) => {
       isLoading.value = true;
       const { priceRoute } = (
         await axios.get<{ priceRoute: any }>(
-          `${apiUrl}/prices?srcToken=${srcToken}&srcDecimals=${srcDecimals}&destToken=${destToken}&destDecimals=${destDecimals}&amount=${amount}&network=${network}&side=${side}`
+          `${apiUrl}/prices?srcToken=${srcToken}&srcDecimals=${srcDecimals}&destToken=${destToken}&destDecimals=${destDecimals}&amount=${amount}&network=${network}&side=${side}&partner=${paymentDetails.partnerName}`
         )
       ).data;
       return priceRoute;
@@ -93,7 +98,7 @@ const useParaSwap = (chainId: string | null) => {
       return (
         await axios.post(`${apiUrl}/transactions/${network}`, {
           ...body,
-          partner: 'paraswap.io',
+          partner: paymentDetails.partnerName,
         })
       ).data;
     } catch (e) {
