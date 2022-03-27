@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Home from '../Pages/GetBalance.vue';
+import PayVue from '../Pages/Pay.vue';
 import Swap from '../Pages/Swap.vue';
 import Test from '../Pages/Test.vue';
 
@@ -13,6 +14,11 @@ const routes = [
     path: '/swap',
     name: 'Swap',
     component: Swap,
+  },
+  {
+    path: '/pay',
+    name: 'Pay',
+    component: PayVue,
   },
   {
     path: '/test',
