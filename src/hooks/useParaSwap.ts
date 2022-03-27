@@ -28,8 +28,8 @@ export interface IParaswapTransactionBoby {
   destAmount: string;
   userAddress: string;
   receiver?: string;
-  partnerAddress: string;
-  partnerFeeBps: number;
+  partnerAddress?: string;
+  partnerFeeBps?: number;
   partner?: string;
   priceRoute: any;
 }
