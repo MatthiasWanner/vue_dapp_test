@@ -13,13 +13,13 @@ const entryTokens = [
   //   img: 'https://img.paraswap.network/WBTC.png',
   //   network: 3,
   // },
-  // {
-  //   symbol: 'DAI',
-  //   address: '0xaD6D458402F60fD3Bd25163575031ACDce07538D',
-  //   decimals: 18,
-  //   img: 'https://img.paraswap.network/DAI.png',
-  //   network: 3,
-  // },
+  {
+    symbol: 'DAI',
+    address: '0xaD6D458402F60fD3Bd25163575031ACDce07538D',
+    decimals: 18,
+    img: 'https://img.paraswap.network/DAI.png',
+    network: 3,
+  },
   {
     symbol: 'sUSD',
     address: '0x21718C0FbD10900565fa57C76e1862cd3F6a4d8E',

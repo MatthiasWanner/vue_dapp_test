@@ -107,7 +107,11 @@
   <form id="payment-form">
     <div class="token-select-container">
       <SelectInput
-        :items="tokensList.map((n) => ({ label: n.symbol, value: n.symbol }))"
+        :items="
+          tokensList
+            .filter((token) => token.symbol !== paymentDetails.paymentCurrency)
+            .map((n) => ({ label: n.symbol, value: n.symbol }))
+        "
         label="Payment Token"
         :register="register"
         fieldName="payment-token"
