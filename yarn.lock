@@ -4923,9 +4923,9 @@ vue@^3.2.25:
     "@vue/server-renderer" "3.2.31"
     "@vue/shared" "3.2.31"
 
-"wallet_balancer@https://github.com/MatthiasWanner/wallet_balancer.git":
+"wallet_balancer@https://github.com/MatthiasWanner/web3_utils.git":
   version "0.0.1"
-  resolved "https://github.com/MatthiasWanner/wallet_balancer.git#a7354506e579f917f157060493bc4da40d1b7077"
+  resolved "https://github.com/MatthiasWanner/web3_utils.git#ccd6d7d13c1d7e905d01f7f3c308cc03ac6589d1"
   dependencies:
     ethers "^5.5.4"
 
