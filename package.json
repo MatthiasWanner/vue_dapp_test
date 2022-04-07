@@ -16,7 +16,7 @@
     "paraswap": "^5.1.0",
     "vue": "^3.2.25",
     "vue-router": "4",
-    "wallet_balancer": "https://github.com/MatthiasWanner/wallet_balancer.git"
+    "wallet_balancer": "https://github.com/MatthiasWanner/web3_utils.git"
   },
   "devDependencies": {
     "@metamask/types": "^1.1.0",
