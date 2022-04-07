@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { getWalletBalance } from 'wallet_balancer/src';
+  import { getWalletBalance } from '@matthias_wanner/web3_utils';
   import useWindowEthereum from '../../hooks/useWindowEthereum';
   import Input from './TextInput.vue';
   import Button from '../UI/Button.vue';
@@ -9,7 +9,7 @@
   import SelectInput from './SelectInput/SelectInput.vue';
   import networks from '../../constants/networks.contants';
   import { IBalanceInfos, IFormData } from '../../types';
-  import { ContractType } from 'wallet_balancer/types';
+  import { ContractType } from '@matthias_wanner/web3_utils/types';
 
   const result = ref<IBalanceInfos | null>(null);
   const requestError = ref<Error | null>(null);
