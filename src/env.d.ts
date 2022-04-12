@@ -6,3 +6,13 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+interface ImportMetaEnv {
+  readonly VITE_PARTNER_WALLET_ADDRESS: string;
+  readonly VITE_PARTNER_FEE_PERCENTAGE: string;
+  readonly VITE_PAYMENT_WALLET_ADDRESS: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

@@ -10,6 +10,7 @@ const useWindowEthereum = () => {
   const status = ref<Status>(Status.DISCONNECTED);
   const account = ref<string | null>(null);
   const network = ref<string | null>(null);
+  const currentChainId = ref<string | null>(null);
 
   const ethereum = (window as any).ethereum;
 
@@ -43,6 +44,13 @@ const useWindowEthereum = () => {
     return (currentChainId as string) || null;
   };
 
+  const sendTransaction = async (body: any) => {
+    const TxHash = await ethereum.request({
+      method: 'eth_sendTransaction',
+      params: [body],
+    });
+  };
+
   const getWalletInfos = () => {
     getAccount()
       .then((connectedAccount) => {
@@ -54,6 +62,7 @@ const useWindowEthereum = () => {
       .then(() => {
         getConnectedNetworkChainId().then((connectedNetworkChainId) => {
           if (connectedNetworkChainId) {
+            currentChainId.value = connectedNetworkChainId;
             network.value = getNetwork(connectedNetworkChainId)?.name || null;
           }
         });
@@ -65,6 +74,7 @@ const useWindowEthereum = () => {
   });
 
   ethereum.on('chainChanged', (chainId: string) => {
+    currentChainId.value = chainId;
     network.value = getNetwork(chainId)?.name || null;
   });
 
@@ -72,6 +82,7 @@ const useWindowEthereum = () => {
     status.value = Status.DISCONNECTED;
     network.value = null;
     account.value = null;
+    currentChainId.value = null;
   });
 
   ethereum.on('connect', ({ chainId }: ConnectInfos) => {
@@ -138,7 +149,9 @@ const useWindowEthereum = () => {
     status,
     account,
     network,
+    currentChainId,
     connect,
+    sendTransaction,
   };
 };
 
