@@ -11,7 +11,7 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
-    "@matthias_wanner/web3_utils": "^0.0.1",
+    "@matthias_wanner/web3_utils": "^0.0.2",
     "@uniswap/token-lists": "^1.0.0-beta.27",
     "axios": "^0.26.1",
     "paraswap": "^5.1.0",
