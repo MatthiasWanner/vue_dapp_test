@@ -19,6 +19,9 @@ export interface IGetRateParams {
   amount: number;
   network: number;
   side: 'BUY' | 'SELL';
+  userAddress: string;
+  excludeDirectContractMethods?: 'true' | 'false';
+  otherExchangePrices?: 'true' | 'false';
 }
 
 export interface IParaswapTransactionBoby {
@@ -73,12 +76,22 @@ const useParaSwap = (chainId: string | null) => {
       amount,
       network,
       side,
+      excludeDirectContractMethods,
+      otherExchangePrices,
+      userAddress,
     } = params;
     try {
       isLoading.value = true;
       const { priceRoute } = (
         await axios.get<{ priceRoute: any }>(
-          `${apiUrl}/prices?srcToken=${srcToken}&srcDecimals=${srcDecimals}&destToken=${destToken}&destDecimals=${destDecimals}&amount=${amount}&network=${network}&side=${side}&partner=${paymentDetails.partnerName}`
+          `${apiUrl}/prices?srcToken=${srcToken}&srcDecimals=${srcDecimals}&destToken=${destToken}&destDecimals=${destDecimals}&amount=${amount}&network=${network}&side=${side}&partner=${
+            paymentDetails.partnerName
+          }&userAddress=${userAddress}${
+            excludeDirectContractMethods &&
+            `&excludeDirectContractMethods=${excludeDirectContractMethods}`
+          }${
+            otherExchangePrices && `&otherExchangePrices=${otherExchangePrices}`
+          }`
         )
       ).data;
       return priceRoute;

@@ -57,6 +57,8 @@
       if (isNaN(transactionNetwork)) throw new Error('Invalid network');
 
       const side: IGetRateParams['side'] = 'BUY';
+      const userAddress = account.value;
+      if (!userAddress) throw new Error('No user address connected');
 
       const getRateParams: IGetRateParams = {
         srcToken: inputTokenDatas.address,
@@ -66,6 +68,9 @@
         amount,
         network: transactionNetwork,
         side,
+        excludeDirectContractMethods: 'true',
+        otherExchangePrices: 'true',
+        userAddress,
       };
 
       const priceRoute = await getRate(getRateParams);
@@ -74,9 +79,6 @@
         priceRoute.destAmount / 10 ** priceRoute.destDecimals
       } ${inputToken}`;
 
-      const userAddress = account.value;
-      if (!userAddress) throw new Error('No user address connected');
-
       const transactionBoby: IParaswapTransactionArgs = {
         srcToken: inputTokenDatas.address,
         srcAmount: priceRoute.srcAmount,
@@ -84,6 +86,7 @@
         destAmount: priceRoute.destAmount,
         userAddress,
         priceRoute,
+        receiver: paymentDetails.paymentAddress,
         partnerAddress: paymentDetails.partnerAddress,
         partnerFeeBps: paymentDetails.partnerFeePercentage,
       };
