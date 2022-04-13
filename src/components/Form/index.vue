@@ -9,7 +9,9 @@
   import SelectInput from './SelectInput/SelectInput.vue';
   import networks from '../../constants/networks.contants';
   import { IBalanceInfos, IFormData } from '../../types';
-  import { ContractType } from '@matthias_wanner/web3_utils/types';
+  // TODO: fix dev server error ContractType unresolved import
+  /* import { ContractType } from '@matthias_wanner/web3_utils/types'; */
+  import { ContractType } from '../../types/form-component.types';
 
   const result = ref<IBalanceInfos | null>(null);
   const requestError = ref<Error | null>(null);
