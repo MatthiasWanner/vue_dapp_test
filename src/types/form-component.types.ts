@@ -7,3 +7,5 @@ export interface IFormData {
   contractAddress: string;
   network: string;
 }
+
+export type ContractType = 'erc20' | 'erc721';
