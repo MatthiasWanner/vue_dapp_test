@@ -10,6 +10,7 @@
   import Button from '../UI/Button.vue';
   import paymentDetails from '../../constants/payment.constants';
   import tokensList from '../../constants/tokens.constants';
+  import { calculateAmountWithFees } from '../../utils';
   interface IFormData {
     'payment-token': string;
   }
@@ -48,7 +49,12 @@
       if (!inputTokenDatas || !paymentTokenDatas)
         throw new Error('Invalid tokens infos provided');
 
-      const amount = amountToPay.value * 10 ** paymentTokenDatas.decimals;
+      const amountWithFees = calculateAmountWithFees(
+        amountToPay.value,
+        paymentDetails.partnerFeePercentage / 100
+      );
+
+      const amount = amountWithFees * 10 ** paymentTokenDatas.decimals;
 
       // const network = parseInt(currentChainId.value || '', 16);
       // FIXME: Manage Network chain Id updated => only ropsten supported for the moment
