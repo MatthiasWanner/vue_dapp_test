@@ -24,7 +24,7 @@ export interface IGetRateParams {
   otherExchangePrices?: 'true' | 'false';
 }
 
-export interface IParaswapTransactionBoby {
+export interface IParaswapTransactionBody {
   srcToken: string;
   destToken: string;
   srcAmount: string;
@@ -37,7 +37,7 @@ export interface IParaswapTransactionBoby {
   priceRoute: any;
 }
 export type IParaswapTransactionArgs = Omit<
-  IParaswapTransactionBoby,
+  IParaswapTransactionBody,
   'partner'
 >;
 
